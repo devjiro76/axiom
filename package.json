@@ -7,6 +7,9 @@
     "search": "tsx src/cli.ts search",
     "lookup": "tsx src/cli.ts lookup",
     "fetch": "tsx src/cli.ts fetch",
+    "filings": "tsx src/cli.ts filings",
+    "seller": "tsx src/seller.ts",
+    "buyer:test": "tsx src/buyer-test.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit"
   },
@@ -23,5 +26,9 @@
     "cheerio": "^1.2.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@virtuals-protocol/acp-node": "^0.3.0-beta.37",
+    "dotenv": "^17.3.1"
   }
 }
