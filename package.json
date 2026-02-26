@@ -10,6 +10,7 @@
     "filings": "tsx src/cli.ts filings",
     "seller": "tsx src/seller.ts",
     "buyer:test": "tsx src/buyer-test.ts",
+    "test": "tsx src/test-local.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit"
   },
