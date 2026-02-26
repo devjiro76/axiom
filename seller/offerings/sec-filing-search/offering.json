@@ -1,0 +1,47 @@
+{
+  "name": "SEC Filing Search & Summary",
+  "description": "Search and summarize SEC EDGAR filings (10-K, 10-Q, 8-K) for any US public company. Returns filing metadata, full text, and AI-generated summaries of key financial data, risk factors, and material events.",
+  "fee": "0.001",
+  "requirements": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": ["lookup", "filings", "search", "fetch"],
+        "description": "Action to perform: lookup (company info), filings (list filings), search (full-text search), fetch (get filing content)"
+      },
+      "ticker": {
+        "type": "string",
+        "description": "Company ticker symbol (e.g. AAPL, TSLA, MSFT)"
+      },
+      "query": {
+        "type": "string",
+        "description": "Search keywords for full-text search action"
+      },
+      "formType": {
+        "type": "string",
+        "enum": ["10-K", "10-Q", "8-K", "S-1", "DEF 14A", "20-F"],
+        "description": "Filter by SEC form type"
+      },
+      "accessionNumber": {
+        "type": "string",
+        "description": "Filing accession number (required for fetch action)"
+      },
+      "primaryDocument": {
+        "type": "string",
+        "description": "Filing document filename (required for fetch action)"
+      },
+      "limit": {
+        "type": "number",
+        "default": 5,
+        "description": "Maximum number of results to return"
+      },
+      "summarize": {
+        "type": "boolean",
+        "default": false,
+        "description": "Whether to include an AI-generated summary of the filing content"
+      }
+    },
+    "required": ["action"]
+  }
+}

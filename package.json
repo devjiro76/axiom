@@ -1,0 +1,27 @@
+{
+  "name": "sec-edgar-skill",
+  "version": "0.1.0",
+  "description": "SEC EDGAR filing search & summary skill for OpenClaw + Virtual ACP",
+  "type": "module",
+  "scripts": {
+    "search": "tsx src/cli.ts search",
+    "lookup": "tsx src/cli.ts lookup",
+    "fetch": "tsx src/cli.ts fetch",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "sec",
+    "edgar",
+    "openclaw",
+    "acp",
+    "virtual-protocol"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.3.1",
+    "cheerio": "^1.2.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
