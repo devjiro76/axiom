@@ -2,6 +2,8 @@
 
 미국 SEC 공시(10-K, 10-Q, 8-K)를 검색하고 조회하는 OpenClaw 스킬 + Virtual Protocol ACP 서비스.
 
+> 크립토/지갑이 처음이라면 → [WALLET-GUIDE.md](./WALLET-GUIDE.md) 먼저 읽기
+
 ## 빠른 시작 (로컬 테스트)
 
 ```bash
