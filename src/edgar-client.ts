@@ -16,7 +16,7 @@ import type {
   FilingContent,
 } from "./types.js";
 
-const USER_AGENT = "SECEdgarSkill contact@example.com";
+const USER_AGENT = process.env.SEC_EDGAR_USER_AGENT ?? "SECEdgarSkill contact@example.com";
 const BASE_HEADERS = { "User-Agent": USER_AGENT };
 
 let tickerCache: Map<string, CompanyInfo> | null = null;

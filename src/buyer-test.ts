@@ -28,7 +28,7 @@ const TEST_SCENARIOS = [
   { action: "search", query: "artificial intelligence", formType: "10-K", limit: 3 },
   { action: "search", query: "revenue growth risk", formType: "10-Q", limit: 3 },
   { action: "search", query: "cybersecurity", formType: "8-K", limit: 3 },
-  { action: "lookup", ticker: "AMZN" },
+  { action: "filings", ticker: "AMZN", formType: "10-K", limit: 1 },
 ];
 
 function parseArgs(): { count: number } {
@@ -65,6 +65,9 @@ async function main() {
       await job.evaluate(true, "Test transaction approved.");
     },
   });
+
+  console.log("[Buyer] Initializing ACP client...");
+  await acpClient.init();
 
   const fare = new FareAmount(0.001, contractConfig.baseFare);
 

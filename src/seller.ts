@@ -118,6 +118,9 @@ async function main() {
     },
   });
 
+  console.log("[Seller] Initializing ACP client...");
+  await acpClient.init();
+
   console.log("[Seller] SEC EDGAR skill seller is running. Waiting for jobs...");
   console.log("[Seller] Press Ctrl+C to stop.");
 }
