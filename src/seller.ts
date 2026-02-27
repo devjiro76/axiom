@@ -15,55 +15,7 @@ import AcpClient, {
   AcpJobPhases,
 } from "@virtuals-protocol/acp-node";
 import { loadSellerConfig, buildContractClient } from "./acp-config.js";
-import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./edgar-client.js";
-
-async function handleJob(job: AcpJob): Promise<string> {
-  const req = job.requirement as Record<string, unknown> | undefined;
-  if (!req || !req.action) {
-    return JSON.stringify({ error: "Missing 'action' in service requirement" });
-  }
-
-  const action = req.action as string;
-  const ticker = req.ticker as string | undefined;
-  const query = req.query as string | undefined;
-  const formType = req.formType as string | undefined;
-  const limit = (req.limit as number) ?? 5;
-
-  switch (action) {
-    case "lookup": {
-      if (!ticker) return JSON.stringify({ error: "ticker is required for lookup" });
-      const company = await lookupCompany(ticker);
-      if (!company) return JSON.stringify({ error: `Ticker "${ticker}" not found` });
-      return JSON.stringify({ success: true, data: company });
-    }
-
-    case "filings": {
-      if (!ticker) return JSON.stringify({ error: "ticker is required for filings" });
-      const result = await getFilings(ticker, { formType, limit });
-      return JSON.stringify({ success: true, data: result });
-    }
-
-    case "search": {
-      if (!query) return JSON.stringify({ error: "query is required for search" });
-      const forms = formType ? [formType] : undefined;
-      const result = await searchFilings(query, { forms, limit });
-      return JSON.stringify({ success: true, data: result });
-    }
-
-    case "fetch": {
-      const accession = req.accessionNumber as string | undefined;
-      const document = req.primaryDocument as string | undefined;
-      if (!ticker || !accession || !document) {
-        return JSON.stringify({ error: "ticker, accessionNumber, primaryDocument required for fetch" });
-      }
-      const result = await fetchFiling(ticker, accession, document);
-      return JSON.stringify({ success: true, data: result });
-    }
-
-    default:
-      return JSON.stringify({ error: `Unknown action: ${action}` });
-  }
-}
+import { handleJobRequest, type JobRequest } from "./job-handler.js";
 
 async function main() {
   console.log("[Seller] Loading configuration...");
@@ -94,9 +46,9 @@ async function main() {
         // TRANSACTION → 작업 실행 후 결과 전달
         if (job.phase === AcpJobPhases.TRANSACTION) {
           console.log(`[Seller] Executing job ${job.id}...`);
-          const result = await handleJob(job);
+          const result = await handleJobRequest(job.requirement as JobRequest | undefined);
           console.log(`[Seller] Delivering result for job ${job.id}...`);
-          await job.deliver(result);
+          await job.deliver(JSON.stringify(result));
           console.log(`[Seller] Job ${job.id} delivered!`);
           return;
         }
