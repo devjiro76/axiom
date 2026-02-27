@@ -39,7 +39,7 @@ export function loadBuyerConfig(): AcpEnvConfig {
   return {
     walletPrivateKey: requireEnv("BUYER_WALLET_PRIVATE_KEY") as `0x${string}`,
     entityKeyId: parseInt(requireEnv("BUYER_ENTITY_KEY_ID"), 10),
-    agentWalletAddress: requireEnv("BUYER_WALLET_ADDRESS") as `0x${string}`,
+    agentWalletAddress: requireEnv("BUYER_AGENT_WALLET_ADDRESS") as `0x${string}`,
     network: (process.env.NETWORK ?? "testnet") as "testnet" | "mainnet",
   };
 }

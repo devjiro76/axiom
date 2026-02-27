@@ -9,13 +9,16 @@
  *   tsx acp/seller.ts
  */
 
-import AcpClient, {
+import AcpClientDefault, {
   AcpJob,
   AcpMemo,
   AcpJobPhases,
 } from "@virtuals-protocol/acp-node";
 import { loadSellerConfig, buildContractClient } from "./acp-config.js";
 import { handleJobRequest, type JobRequest } from "../src/job-handler.js";
+
+// ESM/CJS interop: default export가 { default: class } 형태일 수 있음
+const AcpClient = (AcpClientDefault as any).default ?? AcpClientDefault;
 
 async function main() {
   console.log("[Seller] Loading configuration...");
@@ -26,32 +29,44 @@ async function main() {
   console.log("[Seller] Building contract client...");
   const contractClient = await buildContractClient(config);
 
+  // 중복 처리 방지
+  const processedJobs = new Set<string>();
+
   const acpClient = new AcpClient({
     acpContractClient: contractClient,
 
     onNewTask: async (job: AcpJob, memoToSign?: AcpMemo) => {
-      console.log(`[Seller] New task: jobId=${job.id} phase=${AcpJobPhases[job.phase]}`);
-      console.log(`[Seller]   name=${job.name}`);
+      const jobKey = `${job.id}-${job.phase}`;
+      if (processedJobs.has(jobKey)) {
+        console.log(`[Seller] Skipping duplicate: jobId=${job.id} phase=${job.phase}`);
+        return;
+      }
+      processedJobs.add(jobKey);
+
+      console.log(`[Seller] New task: jobId=${job.id} phase=${job.phase} (${AcpJobPhases[job.phase] ?? job.phase})`);
+      console.log(`[Seller]   memoToSign=${!!memoToSign} memos=${job.memos?.length ?? 0}`);
       console.log(`[Seller]   requirement=${JSON.stringify(job.requirement)}`);
-      console.log(`[Seller]   price=${job.price}`);
 
       try {
         // REQUEST → 작업 수락
         if (job.phase === AcpJobPhases.REQUEST && memoToSign) {
           console.log(`[Seller] Accepting job ${job.id}...`);
-          await job.respond(true, "SEC EDGAR search ready.");
+          const result = await job.respond(true, "SEC EDGAR search ready.");
+          console.log(`[Seller] Respond result:`, JSON.stringify(result));
           return;
         }
 
         // TRANSACTION → 작업 실행 후 결과 전달
         if (job.phase === AcpJobPhases.TRANSACTION) {
           console.log(`[Seller] Executing job ${job.id}...`);
-          const result = await handleJobRequest(job.requirement as JobRequest | undefined);
+          const edgarResult = await handleJobRequest(job.requirement as JobRequest | undefined);
           console.log(`[Seller] Delivering result for job ${job.id}...`);
-          await job.deliver(JSON.stringify(result));
+          await job.deliver(JSON.stringify(edgarResult));
           console.log(`[Seller] Job ${job.id} delivered!`);
           return;
         }
+
+        console.log(`[Seller] Unhandled phase ${job.phase} for job ${job.id}`);
       } catch (err) {
         console.error(`[Seller] Error handling job ${job.id}:`, err);
         try {

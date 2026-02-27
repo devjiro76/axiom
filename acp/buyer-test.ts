@@ -10,12 +10,15 @@
  *   tsx acp/buyer-test.ts --count 10   # 10건 연속 테스트
  */
 
-import AcpClient, {
+import AcpClientDefault, {
   AcpJob,
   AcpJobPhases,
   FareAmount,
 } from "@virtuals-protocol/acp-node";
 import { loadBuyerConfig, loadSellerConfig, buildContractClient, getContractConfig } from "./acp-config.js";
+
+// ESM/CJS interop
+const AcpClient = (AcpClientDefault as any).default ?? AcpClientDefault;
 
 // 테스트 시나리오 10개 (Sandbox 통과용)
 const TEST_SCENARIOS = [
@@ -54,8 +57,28 @@ async function main() {
   const contractClient = await buildContractClient(buyerConfig);
   const contractConfig = getContractConfig(buyerConfig.network);
 
+  const processedMemos = new Set<string>();
+
   const acpClient = new AcpClient({
     acpContractClient: contractClient,
+
+    // NEGOTIATION → TRANSACTION: 셀러의 requirement에 대해 결제 승인 (allowance + sign + memo)
+    onNewTask: async (job: AcpJob, memoToSign?: AcpMemo) => {
+      const dedup = `${job.id}-${job.phase}`;
+      if (processedMemos.has(dedup)) return;
+      processedMemos.add(dedup);
+      console.log(`[Buyer] onNewTask: jobId=${job.id} phase=${AcpJobPhases[job.phase] ?? job.phase} memoToSign=${memoToSign?.id}`);
+      if (job.phase === AcpJobPhases.NEGOTIATION && memoToSign) {
+        try {
+          console.log(`[Buyer] payAndAcceptRequirement for job ${job.id}...`);
+          const result = await job.payAndAcceptRequirement("Approved by buyer.");
+          console.log(`[Buyer] payAndAcceptRequirement done for job ${job.id}:`, JSON.stringify(result));
+        } catch (err: any) {
+          console.error(`[Buyer] Error in payAndAcceptRequirement for job ${job.id}:`, err?.message || err);
+          console.error(`[Buyer] Full stack:`, err?.stack?.slice(0, 500));
+        }
+      }
+    },
 
     onEvaluate: async (job: AcpJob) => {
       const deliverable = await job.getDeliverable();
@@ -69,7 +92,8 @@ async function main() {
   console.log("[Buyer] Initializing ACP client...");
   await acpClient.init();
 
-  const fare = new FareAmount(0.001, contractConfig.baseFare);
+  // fare=0: 토큰 전송 없이 진행 (buyer 계정에 USDC 없음)
+  const fare = new FareAmount(0, contractConfig.baseFare);
 
   for (let i = 0; i < count; i++) {
     const scenario = TEST_SCENARIOS[i];
@@ -84,12 +108,15 @@ async function main() {
       );
       console.log(`[Buyer] Job created: #${jobId}`);
 
-      // 작업 완료 대기 (최대 60초)
+      // 작업 완료 대기 (최대 120초)
       let completed = false;
-      for (let wait = 0; wait < 30; wait++) {
+      for (let wait = 0; wait < 60; wait++) {
         await sleep(2000);
         const job = await acpClient.getJobById(jobId);
-        if (!job) continue;
+        if (!job) { console.log(`[Buyer] Job #${jobId} not found yet...`); continue; }
+
+        const phaseName = AcpJobPhases[job.phase] ?? job.phase;
+        if (wait % 5 === 0) console.log(`[Buyer] Job #${jobId} phase=${phaseName} memos=${job.memos?.length ?? 0}`);
 
         if (job.phase === AcpJobPhases.COMPLETED) {
           console.log(`[Buyer] Job #${jobId} COMPLETED`);
@@ -109,7 +136,8 @@ async function main() {
       }
 
       if (!completed) {
-        console.log(`[Buyer] Job #${jobId} timed out after 60s`);
+        const finalJob = await acpClient.getJobById(jobId);
+        console.log(`[Buyer] Job #${jobId} timed out. Final phase=${finalJob ? AcpJobPhases[finalJob.phase] ?? finalJob.phase : 'null'} memos=${finalJob?.memos?.length}`);
       }
     } catch (err) {
       console.error(`[Buyer] Test ${i + 1} failed:`, err instanceof Error ? err.message : err);
