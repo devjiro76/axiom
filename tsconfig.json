@@ -9,6 +9,6 @@
     "declaration": true,
     "skipLibCheck": true
   },
-  "include": ["src", "seller"],
+  "include": ["src", "acp"],
   "exclude": ["node_modules", "dist"]
 }

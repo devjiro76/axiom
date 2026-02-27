@@ -10,6 +10,7 @@
 
 import type { AcpJob } from "@virtuals-protocol/acp-node";
 import { handleJobRequest, type JobRequest } from "../../../src/job-handler.js";
+// Note: offering handler는 ACP 프레임워크가 로드합니다
 
 export async function executeJob(job: AcpJob): Promise<void> {
   const result = await handleJobRequest(job.requirement as JobRequest | undefined);

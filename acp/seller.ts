@@ -6,7 +6,7 @@
  * WebSocket으로 작업 요청을 대기하다가, 요청이 오면 EDGAR API를 호출해 결과를 반환합니다.
  *
  * Usage:
- *   tsx src/seller.ts
+ *   tsx acp/seller.ts
  */
 
 import AcpClient, {
@@ -15,7 +15,7 @@ import AcpClient, {
   AcpJobPhases,
 } from "@virtuals-protocol/acp-node";
 import { loadSellerConfig, buildContractClient } from "./acp-config.js";
-import { handleJobRequest, type JobRequest } from "./job-handler.js";
+import { handleJobRequest, type JobRequest } from "../src/job-handler.js";
 
 async function main() {
   console.log("[Seller] Loading configuration...");

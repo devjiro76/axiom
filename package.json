@@ -1,35 +1,42 @@
 {
   "name": "sec-edgar-skill",
-  "version": "0.1.0",
-  "description": "SEC EDGAR filing search & summary skill for OpenClaw + Virtual ACP",
+  "version": "0.2.0",
+  "description": "SEC EDGAR filing search skill — 미국 공시 검색 CLI & 라이브러리",
   "type": "module",
+  "bin": {
+    "sec-edgar": "src/cli.ts"
+  },
   "scripts": {
     "search": "tsx src/cli.ts search",
     "lookup": "tsx src/cli.ts lookup",
     "fetch": "tsx src/cli.ts fetch",
     "filings": "tsx src/cli.ts filings",
-    "seller": "tsx src/seller.ts",
-    "buyer:test": "tsx src/buyer-test.ts",
     "test": "tsx src/test-local.ts",
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seller": "tsx acp/seller.ts",
+    "buyer:test": "tsx acp/buyer-test.ts"
   },
   "keywords": [
     "sec",
     "edgar",
+    "filings",
+    "10-k",
+    "10-q",
     "openclaw",
-    "acp",
     "virtual-protocol"
   ],
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^25.3.1",
+    "@virtuals-protocol/acp-node": "^0.3.0-beta.37",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@virtuals-protocol/acp-node": "^0.3.0-beta.37",
-    "cheerio": "^1.2.0",
+    "cheerio": "^1.2.0"
+  },
+  "optionalDependencies": {
     "dotenv": "^17.3.1"
   }
 }
