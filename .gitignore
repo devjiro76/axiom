@@ -1,7 +1,28 @@
+# Dependencies
 node_modules/
+
+# Build
 dist/
+
+# Environment
 .env
-.env.local
+.env.*
+!.env.example
+
+# Logs
 *.log
+
+# OS
 .DS_Store
+Thumbs.db
+
+# IDE / Plugins
 .serena/
+.claude/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
