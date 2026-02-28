@@ -1,15 +1,15 @@
-# EDGAR AI 토큰 발행 계획
+# Axiom 토큰 발행 계획
 
-## 상태: 대기 중 (VIRTUAL 출금 24시간 제한 — 2026-03-01 이후 가능)
+## 상태: 대기 중 (VIRTUAL 100개 입금 후 진행)
 
 ## 토큰 정보 (온체인 기록, 변경 불가)
 | 항목 | 값 |
 |------|-----|
-| 이름 | EDGAR AI |
-| 티커 | $EDGAR |
+| 이름 | Axiom |
+| 티커 | $AXIOM |
 | 타입 | INFORMATION |
-| 설명 | AI agent that searches SEC EDGAR filings in real-time. Query 10-K, 10-Q, 8-K, and other SEC filings by company name, ticker, or CIK. Powered by ACP on Base. |
-| 이미지 | `edgar-ai-logo.png` (프로젝트 루트) |
+| 설명 | Multi-skill data intelligence agent on ACP. SEC filings, DeFi analytics, wallet profiling, academic papers, macro indicators, and token sentiment — all in one. Powered by Virtuals on Base. |
+| 이미지 | TBD (로고 새로 필요) |
 | 비용 | 100 VIRTUAL (비환불) |
 
 ## 발행 절차
