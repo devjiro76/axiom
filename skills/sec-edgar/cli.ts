@@ -3,13 +3,13 @@
  * SEC EDGAR CLI
  *
  * Usage:
- *   tsx src/cli.ts lookup AAPL
- *   tsx src/cli.ts search "artificial intelligence" --forms 10-K --limit 5
- *   tsx src/cli.ts filings AAPL --form 10-K --limit 5
- *   tsx src/cli.ts fetch AAPL <accessionNumber> <primaryDocument>
+ *   tsx skills/sec-edgar/cli.ts lookup AAPL
+ *   tsx skills/sec-edgar/cli.ts search "artificial intelligence" --forms 10-K --limit 5
+ *   tsx skills/sec-edgar/cli.ts filings AAPL --form 10-K --limit 5
+ *   tsx skills/sec-edgar/cli.ts fetch AAPL <accessionNumber> <primaryDocument>
  */
 
-import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./edgar-client.js";
+import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./client.js";
 import { FORM_DESCRIPTIONS, type FormType } from "./types.js";
 
 const [, , command, ...args] = process.argv;
@@ -30,10 +30,10 @@ ${Object.entries(FORM_DESCRIPTIONS)
   .join("\n")}
 
 Examples:
-  tsx src/cli.ts lookup AAPL
-  tsx src/cli.ts filings TSLA --form 10-K --limit 3
-  tsx src/cli.ts search "revenue growth" --forms 10-K,10-Q --limit 5
-  tsx src/cli.ts fetch AAPL 0000320193-23-000106 aapl-20230930.htm
+  tsx skills/sec-edgar/cli.ts lookup AAPL
+  tsx skills/sec-edgar/cli.ts filings TSLA --form 10-K --limit 3
+  tsx skills/sec-edgar/cli.ts search "revenue growth" --forms 10-K,10-Q --limit 5
+  tsx skills/sec-edgar/cli.ts fetch AAPL 0000320193-23-000106 aapl-20230930.htm
 `);
 }
 

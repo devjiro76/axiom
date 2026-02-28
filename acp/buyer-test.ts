@@ -15,7 +15,7 @@ import AcpClientDefault, {
   AcpJobPhases,
   FareAmount,
 } from "@virtuals-protocol/acp-node";
-import { loadBuyerConfig, loadSellerConfig, buildContractClient, getContractConfig } from "./acp-config.js";
+import { loadBuyerConfig, loadSellerConfig, buildContractClient, getContractConfig } from "./config.js";
 
 // ESM/CJS interop
 const AcpClient = (AcpClientDefault as any).default ?? AcpClientDefault;

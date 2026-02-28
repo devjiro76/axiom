@@ -14,8 +14,8 @@ import AcpClientDefault, {
   AcpMemo,
   AcpJobPhases,
 } from "@virtuals-protocol/acp-node";
-import { loadSellerConfig, buildContractClient } from "./acp-config.js";
-import { handleJobRequest, type JobRequest } from "../src/job-handler.js";
+import { loadSellerConfig, buildContractClient } from "./config.js";
+import { handleJobRequest, type JobRequest } from "../skills/sec-edgar/handler.js";
 
 // ESM/CJS interop: default export가 { default: class } 형태일 수 있음
 const AcpClient = (AcpClientDefault as any).default ?? AcpClientDefault;
@@ -91,6 +91,12 @@ async function main() {
   console.log("[Seller] SEC EDGAR skill seller is running. Waiting for jobs...");
   console.log("[Seller] Press Ctrl+C to stop.");
 }
+
+// Graceful shutdown (pm2 sends SIGTERM)
+process.on("SIGTERM", () => {
+  console.log("[Seller] SIGTERM received, shutting down...");
+  process.exit(0);
+});
 
 main().catch((err) => {
   console.error("[Seller] Fatal error:", err);

@@ -6,10 +6,10 @@
  * 실제 셀러가 받을 요청을 시뮬레이션합니다.
  *
  * Usage:
- *   tsx src/test-local.ts
+ *   tsx skills/sec-edgar/test.ts
  */
 
-import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./edgar-client.js";
+import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./client.js";
 
 interface TestCase {
   name: string;

@@ -1,19 +1,20 @@
 {
-  "name": "sec-edgar-skill",
+  "name": "virtual-acp",
   "version": "0.2.0",
-  "description": "SEC EDGAR filing search skill — 미국 공시 검색 CLI & 라이브러리",
+  "description": "ACP multi-skill umbrella — Virtuals Protocol Agent Commerce",
   "type": "module",
   "bin": {
-    "sec-edgar": "src/cli.ts"
+    "sec-edgar": "skills/sec-edgar/cli.ts"
   },
   "scripts": {
-    "search": "tsx src/cli.ts search",
-    "lookup": "tsx src/cli.ts lookup",
-    "fetch": "tsx src/cli.ts fetch",
-    "filings": "tsx src/cli.ts filings",
-    "test": "tsx src/test-local.ts",
+    "search": "tsx skills/sec-edgar/cli.ts search",
+    "lookup": "tsx skills/sec-edgar/cli.ts lookup",
+    "fetch": "tsx skills/sec-edgar/cli.ts fetch",
+    "filings": "tsx skills/sec-edgar/cli.ts filings",
+    "test": "tsx skills/sec-edgar/test.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
+    "start": "tsx acp/seller.ts",
     "seller": "tsx acp/seller.ts",
     "buyer:test": "tsx acp/buyer-test.ts"
   },

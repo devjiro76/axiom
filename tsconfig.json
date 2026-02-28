@@ -9,6 +9,6 @@
     "declaration": true,
     "skipLibCheck": true
   },
-  "include": ["src", "acp"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["skills", "acp"],
+  "exclude": ["node_modules", "dist", "acp/buyer-test.ts"]
 }

@@ -5,7 +5,7 @@
  * 요청을 파싱해서 EDGAR API를 호출하고 결과 객체를 반환합니다.
  */
 
-import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./edgar-client.js";
+import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./client.js";
 
 export interface JobRequest {
   action?: string;
