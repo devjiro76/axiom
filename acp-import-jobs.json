@@ -1,0 +1,84 @@
+{
+  "jobs": [
+    {
+      "hide": false,
+      "name": "defiAnalytics",
+      "jobInput": "{\"skill\": \"defi-analytics\", \"action\": \"top_protocols\", \"limit\": 5}",
+      "jobOutput": "{\"success\": true, \"data\": {\"protocols\": [{\"name\": \"Aave V3\", \"tvl\": 25000000000, \"chains\": [\"Ethereum\", \"Base\"]}]}}",
+      "restricted": false,
+      "slaMinutes": 5,
+      "deliverable": "JSON with DeFi protocol data: TVL rankings, yield pools, chain TVL comparisons, or stablecoin stats",
+      "description": "DeFi protocol analytics via DefiLlama. Get TVL rankings, protocol details, yield pools, chain comparisons, and stablecoin market data.",
+      "requirement": "skill=defi-analytics, action (top_protocols/protocol_detail/yield_search/chain_tvl/stablecoin_stats), name (protocol slug), chain, limit",
+      "requiredFunds": false,
+      "price": {
+        "type": "fixed",
+        "value": 0.5
+      }
+    },
+    {
+      "hide": false,
+      "name": "walletProfiler",
+      "jobInput": "{\"skill\": \"wallet-profiler\", \"action\": \"balance\", \"address\": \"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045\", \"chain\": \"ethereum\"}",
+      "jobOutput": "{\"success\": true, \"data\": {\"address\": \"0xd8dA...\", \"chain\": \"ethereum\", \"balanceEth\": \"32.131\"}}",
+      "restricted": false,
+      "slaMinutes": 5,
+      "deliverable": "JSON with wallet data: ETH balance, token holdings, transaction history, TX summary, or NFT holdings",
+      "description": "On-chain wallet analysis on Base and Ethereum. Check balances, token holdings, transaction history, and NFTs for any address.",
+      "requirement": "skill=wallet-profiler, action (balance/tokens/tx_history/tx_summary/nft_holdings), address (0x...), chain (base/ethereum), limit",
+      "requiredFunds": false,
+      "price": {
+        "type": "fixed",
+        "value": 0.5
+      }
+    },
+    {
+      "hide": false,
+      "name": "paperSearch",
+      "jobInput": "{\"skill\": \"paper-search\", \"action\": \"search\", \"query\": \"transformer attention mechanism\", \"limit\": 5}",
+      "jobOutput": "{\"success\": true, \"data\": {\"total\": 12500, \"papers\": [{\"title\": \"Attention Is All You Need\", \"year\": 2017, \"citationCount\": 120000}]}}",
+      "restricted": false,
+      "slaMinutes": 5,
+      "deliverable": "JSON with academic paper data: search results, paper details, citation graphs, or author publication lists",
+      "description": "Academic paper search via Semantic Scholar. Find papers by keyword, get citation data, paper details, and author publications.",
+      "requirement": "skill=paper-search, action (search/paper_detail/citations/author_papers), query, paperId, authorId, year, limit",
+      "requiredFunds": false,
+      "price": {
+        "type": "fixed",
+        "value": 0.5
+      }
+    },
+    {
+      "hide": false,
+      "name": "usMacroData",
+      "jobInput": "{\"skill\": \"macro-data\", \"action\": \"popular\"}",
+      "jobOutput": "{\"success\": true, \"data\": {\"indicators\": [{\"id\": \"FEDFUNDS\", \"title\": \"Federal Funds Rate\", \"value\": \"3.64\"}]}}",
+      "restricted": false,
+      "slaMinutes": 5,
+      "deliverable": "JSON with US macro indicators: FRED series data, interest rates, GDP, CPI, unemployment, and time series comparisons",
+      "description": "US macroeconomic data via FRED. Access interest rates, GDP, employment, inflation, and 800K+ economic time series.",
+      "requirement": "skill=macro-data, action (search/series/popular/compare), query, seriesId (e.g. FEDFUNDS), startDate, endDate, limit",
+      "requiredFunds": false,
+      "price": {
+        "type": "fixed",
+        "value": 0.5
+      }
+    },
+    {
+      "hide": false,
+      "name": "tokenSentiment",
+      "jobInput": "{\"skill\": \"token-sentiment\", \"action\": \"sentiment\", \"coinId\": \"bitcoin\"}",
+      "jobOutput": "{\"success\": true, \"data\": {\"coin\": \"bitcoin\", \"sentimentScore\": 72, \"signal\": \"bullish\", \"price\": 63862}}",
+      "restricted": false,
+      "slaMinutes": 5,
+      "deliverable": "JSON with token sentiment: price momentum, volume analysis, social signals, trending coins, or market overview",
+      "description": "Crypto token sentiment analysis via CoinGecko. Get price data, sentiment scores, trending coins, multi-token comparison, and market overview.",
+      "requirement": "skill=token-sentiment, action (overview/sentiment/trending/compare/market_overview), coinId, coinIds (array), limit",
+      "requiredFunds": false,
+      "price": {
+        "type": "fixed",
+        "value": 0.5
+      }
+    }
+  ]
+}

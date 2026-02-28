@@ -31,8 +31,14 @@ registerSkill("paper-search", paperHandler);
 registerSkill("defi-analytics", defiHandler);
 registerSkill("macro-data", macroHandler);
 registerSkill("wallet-profiler", walletHandler);
-registerSkill("patent-search", patentHandler);
 registerSkill("token-sentiment", sentimentHandler);
+
+// API 키 필요 스킬: 키 있을 때만 등록
+if (process.env.PATENTSVIEW_API_KEY) {
+  registerSkill("patent-search", patentHandler);
+} else {
+  console.log("[Seller] patent-search disabled (PATENTSVIEW_API_KEY not set)");
+}
 setDefaultSkill("sec-edgar");
 
 // ESM/CJS interop: default export가 { default: class } 형태일 수 있음

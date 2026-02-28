@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 /**
  * On-chain Wallet Profiler — Local test
- * Requires BASESCAN_API_KEY or ETHERSCAN_API_KEY
+ * Requires ETHERSCAN_API_KEY (V2 — covers Base + Ethereum)
  */
 
 import { getBalance, getTxHistory, getTxSummary } from "./client.js";
@@ -9,14 +9,14 @@ import { getBalance, getTxHistory, getTxSummary } from "./client.js";
 async function main() {
   console.log("=== Wallet Profiler Test ===\n");
 
-  if (!process.env.BASESCAN_API_KEY && !process.env.ETHERSCAN_API_KEY) {
-    console.log("⚠️  BASESCAN_API_KEY or ETHERSCAN_API_KEY not set. Skipping test.");
+  if (!process.env.ETHERSCAN_API_KEY && !process.env.BASESCAN_API_KEY) {
+    console.log("⚠️  ETHERSCAN_API_KEY not set. Skipping test.");
     return;
   }
 
   // Vitalik's address on Ethereum
   const address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
-  const chain = process.env.ETHERSCAN_API_KEY ? "ethereum" as const : "base" as const;
+  const chain = "ethereum" as const;
 
   console.log(`1) Balance: ${address.slice(0, 10)}... on ${chain}`);
   const balance = await getBalance(address, { chain });

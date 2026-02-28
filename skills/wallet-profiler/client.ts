@@ -1,10 +1,9 @@
 /**
- * Etherscan / Basescan API Client
+ * Etherscan V2 API Client (unified endpoint for all EVM chains)
  *
  * 무료 API 키 필요 (즉시 발급).
  * 5 calls/sec, 100k calls/day.
- * https://docs.basescan.org/
- * https://docs.etherscan.io/
+ * https://docs.etherscan.io/etherscan-v2
  */
 
 import type {
@@ -16,22 +15,23 @@ import type {
   NftHolding,
 } from "./types.js";
 
-const ENDPOINTS: Record<Chain, string> = {
-  base: "https://api.basescan.org/api",
-  ethereum: "https://api.etherscan.io/api",
+const V2_ENDPOINT = "https://api.etherscan.io/v2/api";
+
+const CHAIN_IDS: Record<Chain, string> = {
+  base: "8453",
+  ethereum: "1",
 };
 
-function getApiKey(chain: Chain): string {
-  const key = chain === "base"
-    ? process.env.BASESCAN_API_KEY
-    : process.env.ETHERSCAN_API_KEY;
-  if (!key) throw new Error(`${chain.toUpperCase()}_API_KEY (or BASESCAN/ETHERSCAN_API_KEY) not set`);
+function getApiKey(): string {
+  const key = process.env.ETHERSCAN_API_KEY ?? process.env.BASESCAN_API_KEY;
+  if (!key) throw new Error("ETHERSCAN_API_KEY not set");
   return key;
 }
 
 async function fetchApi<T>(chain: Chain, params: Record<string, string>): Promise<T> {
-  const apiKey = getApiKey(chain);
-  const url = new URL(ENDPOINTS[chain]);
+  const apiKey = getApiKey();
+  const url = new URL(V2_ENDPOINT);
+  url.searchParams.set("chainid", CHAIN_IDS[chain]);
   url.searchParams.set("apikey", apiKey);
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);
