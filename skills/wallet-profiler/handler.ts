@@ -7,11 +7,23 @@ import type { Chain } from "./types.js";
 import type { SkillRequest, SkillResult } from "../../lib/skill-registry.js";
 
 export async function handleJobRequest(req: SkillRequest | undefined): Promise<SkillResult> {
-  if (!req || !req.action) {
-    return { error: "Missing 'action' in requirement" };
+  if (!req) {
+    return { error: "Missing service requirement" };
   }
 
-  const { action } = req;
+  // Butler may send snake_case fields — normalize
+  const raw = req as Record<string, unknown>;
+  const txHistory = raw["tx_history"];
+  const txSummary = raw["tx_summary"];
+  const nftHoldings = raw["nft_holdings"];
+
+  // Infer action if not specified
+  let action = req.action;
+  if (!action) {
+    if (raw["address"]) action = "balance";
+    else return { error: "Missing 'action' (or 'address') in service requirement" };
+  }
+
   const address = req.address as string | undefined;
   if (!address && action !== "help") {
     return { error: "address is required" };

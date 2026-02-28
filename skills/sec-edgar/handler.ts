@@ -24,11 +24,22 @@ export interface JobResult {
 }
 
 export async function handleJobRequest(req: JobRequest | undefined): Promise<JobResult> {
-  if (!req || !req.action) {
-    return { error: "Missing 'action' in service requirement" };
+  if (!req) {
+    return { error: "Missing service requirement" };
   }
 
-  const { action, ticker, query, formType, limit = 5 } = req;
+  // Butler may send snake_case fields — normalize
+  const raw = req as Record<string, unknown>;
+  const formType = (req.formType ?? raw["form_type"] ?? raw["formtype"]) as string | undefined;
+  const { ticker, query, limit = 5 } = req;
+
+  // Infer action if not specified
+  let action = req.action;
+  if (!action) {
+    if (ticker) action = "filings";
+    else if (query) action = "search";
+    else return { error: "Missing 'action' (or 'ticker'/'query') in service requirement" };
+  }
 
   switch (action) {
     case "lookup": {

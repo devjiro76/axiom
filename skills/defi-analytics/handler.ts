@@ -6,11 +6,23 @@ import { getTopProtocols, getProtocolDetail, searchYieldPools, getChainTvl, getS
 import type { SkillRequest, SkillResult } from "../../lib/skill-registry.js";
 
 export async function handleJobRequest(req: SkillRequest | undefined): Promise<SkillResult> {
-  if (!req || !req.action) {
-    return { error: "Missing 'action' in requirement" };
+  if (!req) {
+    return { error: "Missing service requirement" };
   }
 
-  const { action } = req;
+  // Butler may send snake_case fields — normalize
+  const raw = req as Record<string, unknown>;
+  const minTvl = (req.minTvl ?? raw["min_tvl"]) as number | undefined;
+  const sortBy = (req.sortBy ?? raw["sort_by"]) as "apy" | "tvl" | undefined;
+
+  // Infer action if not specified
+  let action = req.action;
+  if (!action) {
+    if (raw["name"] || raw["protocol"]) action = "protocol_detail";
+    else if (raw["chain"] && !raw["query"]) action = "chain_tvl";
+    else if (raw["query"] || minTvl || sortBy) action = "yield_search";
+    else action = "top_protocols";
+  }
 
   switch (action) {
     case "top_protocols": {
@@ -22,7 +34,7 @@ export async function handleJobRequest(req: SkillRequest | undefined): Promise<S
     }
 
     case "protocol_detail": {
-      const name = req.name as string | undefined;
+      const name = (req.name ?? raw["protocol"]) as string | undefined;
       if (!name) return { error: "name is required for protocol_detail" };
       const result = await getProtocolDetail(name);
       return { success: true, data: result };
@@ -31,8 +43,8 @@ export async function handleJobRequest(req: SkillRequest | undefined): Promise<S
     case "yield_search": {
       const result = await searchYieldPools({
         chain: req.chain as string | undefined,
-        minTvl: req.minTvl as number | undefined,
-        sortBy: req.sortBy as "apy" | "tvl" | undefined,
+        minTvl,
+        sortBy,
         limit: req.limit as number | undefined,
       });
       return { success: true, data: result };

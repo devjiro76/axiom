@@ -6,11 +6,25 @@ import { searchSeries, getSeriesObservations, getPopularIndicators, compareSerie
 import type { SkillRequest, SkillResult } from "../../lib/skill-registry.js";
 
 export async function handleJobRequest(req: SkillRequest | undefined): Promise<SkillResult> {
-  if (!req || !req.action) {
-    return { error: "Missing 'action' in requirement" };
+  if (!req) {
+    return { error: "Missing service requirement" };
   }
 
-  const { action } = req;
+  // Butler may send snake_case fields — normalize
+  const raw = req as Record<string, unknown>;
+  const seriesId = (req.seriesId ?? raw["series_id"]) as string | undefined;
+  const seriesIds = (req.seriesIds ?? raw["series_ids"]) as string[] | undefined;
+  const startDate = (req.startDate ?? raw["start_date"]) as string | undefined;
+  const endDate = (req.endDate ?? raw["end_date"]) as string | undefined;
+
+  // Infer action if not specified
+  let action = req.action;
+  if (!action) {
+    if (seriesId) action = "series";
+    else if (seriesIds?.length) action = "compare";
+    else if (raw["query"]) action = "search";
+    else action = "popular";
+  }
 
   switch (action) {
     case "search": {
@@ -23,11 +37,10 @@ export async function handleJobRequest(req: SkillRequest | undefined): Promise<S
     }
 
     case "series": {
-      const seriesId = req.seriesId as string | undefined;
       if (!seriesId) return { error: "seriesId is required for series" };
       const result = await getSeriesObservations(seriesId, {
-        startDate: req.startDate as string | undefined,
-        endDate: req.endDate as string | undefined,
+        startDate,
+        endDate,
         frequency: req.frequency as string | undefined,
       });
       return { success: true, data: result };
@@ -39,10 +52,9 @@ export async function handleJobRequest(req: SkillRequest | undefined): Promise<S
     }
 
     case "compare": {
-      const seriesIds = req.seriesIds as string[] | undefined;
       if (!seriesIds?.length) return { error: "seriesIds[] is required for compare" };
       const result = await compareSeries(seriesIds, {
-        startDate: req.startDate as string | undefined,
+        startDate,
       });
       return { success: true, data: result };
     }

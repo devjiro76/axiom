@@ -6,22 +6,31 @@ import { getTokenOverview, getTokenSentiment, getTrendingCoins, compareTokens, g
 import type { SkillRequest, SkillResult } from "../../lib/skill-registry.js";
 
 export async function handleJobRequest(req: SkillRequest | undefined): Promise<SkillResult> {
-  if (!req || !req.action) {
-    return { error: "Missing 'action' in requirement" };
+  if (!req) {
+    return { error: "Missing service requirement" };
   }
 
-  const { action } = req;
+  // Butler may send snake_case fields — normalize
+  const raw = req as Record<string, unknown>;
+  const coinId = (req.coinId ?? raw["coin_id"]) as string | undefined;
+  const coinIds = (req.coinIds ?? raw["coin_ids"]) as string[] | undefined;
+
+  // Infer action if not specified
+  let action = req.action;
+  if (!action) {
+    if (coinIds?.length) action = "compare";
+    else if (coinId) action = "sentiment";
+    else action = "overview";
+  }
 
   switch (action) {
     case "overview": {
-      const coinId = req.coinId as string | undefined;
       if (!coinId) return { error: "coinId is required for overview" };
       const result = await getTokenOverview(coinId);
       return { success: true, data: result };
     }
 
     case "sentiment": {
-      const coinId = req.coinId as string | undefined;
       if (!coinId) return { error: "coinId is required for sentiment" };
       const result = await getTokenSentiment(coinId);
       return { success: true, data: result };
@@ -35,7 +44,6 @@ export async function handleJobRequest(req: SkillRequest | undefined): Promise<S
     }
 
     case "compare": {
-      const coinIds = req.coinIds as string[] | undefined;
       if (!coinIds?.length) return { error: "coinIds[] is required for compare" };
       const result = await compareTokens(coinIds);
       return { success: true, data: result };

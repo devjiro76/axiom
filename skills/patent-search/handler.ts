@@ -6,25 +6,37 @@ import { searchPatents, getPatentDetail, getCompanyPatents, getInventorPatents, 
 import type { SkillRequest, SkillResult } from "../../lib/skill-registry.js";
 
 export async function handleJobRequest(req: SkillRequest | undefined): Promise<SkillResult> {
-  if (!req || !req.action) {
-    return { error: "Missing 'action' in requirement" };
+  if (!req) {
+    return { error: "Missing service requirement" };
   }
 
-  const { action } = req;
+  // Butler may send snake_case fields — normalize
+  const raw = req as Record<string, unknown>;
+  const patentNumber = (req.patentNumber ?? raw["patent_number"]) as string | undefined;
+  const dateRange = (req.dateRange ?? raw["date_range"]) as string | undefined;
+
+  // Infer action if not specified
+  let action = req.action;
+  if (!action) {
+    if (patentNumber) action = "patent_detail";
+    else if (raw["assignee"]) action = "company_patents";
+    else if (raw["inventor"]) action = "inventor_patents";
+    else if (raw["query"]) action = "search";
+    else action = "trending_fields";
+  }
 
   switch (action) {
     case "search": {
       const query = req.query as string | undefined;
       if (!query) return { error: "query is required for search" };
       const result = await searchPatents(query, {
-        dateRange: req.dateRange as string | undefined,
+        dateRange,
         limit: req.limit as number | undefined,
       });
       return { success: true, data: result };
     }
 
     case "patent_detail": {
-      const patentNumber = req.patentNumber as string | undefined;
       if (!patentNumber) return { error: "patentNumber is required for patent_detail" };
       const result = await getPatentDetail(patentNumber);
       return { success: true, data: result };
