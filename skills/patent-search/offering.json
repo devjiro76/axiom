@@ -1,0 +1,21 @@
+{
+  "name": "Patent Search",
+  "description": "Search US patents via USPTO PatentsView — keyword search, company/inventor lookup, trending tech fields.",
+  "requirement": {
+    "type": "object",
+    "properties": {
+      "skill": { "const": "patent-search" },
+      "action": {
+        "type": "string",
+        "enum": ["search", "patent_detail", "company_patents", "inventor_patents", "trending_fields"]
+      },
+      "query": { "type": "string", "description": "Search keywords (for 'search')" },
+      "patentNumber": { "type": "string", "description": "Patent number (for 'patent_detail')" },
+      "assignee": { "type": "string", "description": "Company name (for 'company_patents')" },
+      "inventor": { "type": "string", "description": "Inventor name (for 'inventor_patents')" },
+      "dateRange": { "type": "string", "description": "Date range filter" },
+      "limit": { "type": "integer", "default": 10, "maximum": 100 }
+    },
+    "required": ["skill", "action"]
+  }
+}

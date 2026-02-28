@@ -1,0 +1,22 @@
+{
+  "name": "Academic Paper Search",
+  "description": "Search academic papers, get details, citations, and author info via Semantic Scholar API.",
+  "requirement": {
+    "type": "object",
+    "properties": {
+      "skill": { "const": "paper-search" },
+      "action": {
+        "type": "string",
+        "enum": ["search", "paper_detail", "citations", "author_papers"]
+      },
+      "query": { "type": "string", "description": "Search query (for 'search' action)" },
+      "paperId": { "type": "string", "description": "Semantic Scholar paper ID (for 'paper_detail', 'citations')" },
+      "authorId": { "type": "string", "description": "Author ID (for 'author_papers')" },
+      "direction": { "type": "string", "enum": ["citations", "references"], "default": "citations" },
+      "year": { "type": "string", "description": "Filter by year, e.g. '2024' or '2020-2024'" },
+      "fields": { "type": "string", "description": "Filter by field of study" },
+      "limit": { "type": "integer", "default": 10, "maximum": 100 }
+    },
+    "required": ["skill", "action"]
+  }
+}

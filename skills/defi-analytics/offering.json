@@ -1,0 +1,21 @@
+{
+  "name": "DeFi Analytics",
+  "description": "DeFi protocol analytics via DefiLlama — TVL rankings, yield pools, chain comparison, stablecoin stats.",
+  "requirement": {
+    "type": "object",
+    "properties": {
+      "skill": { "const": "defi-analytics" },
+      "action": {
+        "type": "string",
+        "enum": ["top_protocols", "protocol_detail", "yield_search", "chain_tvl", "stablecoin_stats"]
+      },
+      "name": { "type": "string", "description": "Protocol slug (for 'protocol_detail')" },
+      "chain": { "type": "string", "description": "Filter by chain name" },
+      "chains": { "type": "array", "items": { "type": "string" }, "description": "Chain names (for 'chain_tvl')" },
+      "minTvl": { "type": "number", "description": "Minimum TVL filter (for 'yield_search')" },
+      "sortBy": { "type": "string", "enum": ["apy", "tvl"], "default": "tvl" },
+      "limit": { "type": "integer", "default": 10, "maximum": 100 }
+    },
+    "required": ["skill", "action"]
+  }
+}

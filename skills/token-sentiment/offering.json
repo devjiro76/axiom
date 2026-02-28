@@ -1,0 +1,18 @@
+{
+  "name": "Token Sentiment Scanner",
+  "description": "Crypto token sentiment analysis via CoinGecko — price momentum, volume, social signals, trending coins.",
+  "requirement": {
+    "type": "object",
+    "properties": {
+      "skill": { "const": "token-sentiment" },
+      "action": {
+        "type": "string",
+        "enum": ["overview", "sentiment", "trending", "compare", "market_overview"]
+      },
+      "coinId": { "type": "string", "description": "CoinGecko coin ID (for 'overview', 'sentiment')" },
+      "coinIds": { "type": "array", "items": { "type": "string" }, "description": "Multiple coin IDs (for 'compare')" },
+      "limit": { "type": "integer", "default": 10, "maximum": 50 }
+    },
+    "required": ["skill", "action"]
+  }
+}

@@ -1,9 +1,9 @@
 #!/usr/bin/env tsx
 /**
- * ACP Seller Runtime
+ * ACP Seller Runtime — Multi-skill
  *
- * SEC EDGAR 검색 서비스를 ACP 마켓플레이스에서 제공합니다.
- * WebSocket으로 작업 요청을 대기하다가, 요청이 오면 EDGAR API를 호출해 결과를 반환합니다.
+ * 등록된 모든 스킬을 ACP 마켓플레이스에서 제공합니다.
+ * requirement.skill 필드로 라우팅, 미지정 시 기본 스킬(sec-edgar)로 폴백.
  *
  * Usage:
  *   tsx acp/seller.ts
@@ -15,7 +15,25 @@ import AcpClientDefault, {
   AcpJobPhases,
 } from "@virtuals-protocol/acp-node";
 import { loadSellerConfig, buildContractClient } from "./config.js";
-import { handleJobRequest, type JobRequest } from "../skills/sec-edgar/handler.js";
+import { registerSkill, setDefaultSkill, routeRequest, listSkills, type SkillRequest } from "../lib/skill-registry.js";
+
+// ─── Skill Registration ───
+import { handleJobRequest as edgarHandler } from "../skills/sec-edgar/handler.js";
+import { handleJobRequest as paperHandler } from "../skills/paper-search/handler.js";
+import { handleJobRequest as defiHandler } from "../skills/defi-analytics/handler.js";
+import { handleJobRequest as macroHandler } from "../skills/macro-data/handler.js";
+import { handleJobRequest as walletHandler } from "../skills/wallet-profiler/handler.js";
+import { handleJobRequest as patentHandler } from "../skills/patent-search/handler.js";
+import { handleJobRequest as sentimentHandler } from "../skills/token-sentiment/handler.js";
+
+registerSkill("sec-edgar", edgarHandler as (req: SkillRequest | undefined) => Promise<{ success?: boolean; error?: string; data?: unknown }>);
+registerSkill("paper-search", paperHandler);
+registerSkill("defi-analytics", defiHandler);
+registerSkill("macro-data", macroHandler);
+registerSkill("wallet-profiler", walletHandler);
+registerSkill("patent-search", patentHandler);
+registerSkill("token-sentiment", sentimentHandler);
+setDefaultSkill("sec-edgar");
 
 // ESM/CJS interop: default export가 { default: class } 형태일 수 있음
 const AcpClient = (AcpClientDefault as any).default ?? AcpClientDefault;
@@ -51,7 +69,8 @@ async function main() {
         // REQUEST → 작업 수락
         if (job.phase === AcpJobPhases.REQUEST && memoToSign) {
           console.log(`[Seller] Accepting job ${job.id}...`);
-          const result = await job.respond(true, "SEC EDGAR search ready.");
+          const skills = listSkills().join(", ");
+          const result = await job.respond(true, `Ready. Available skills: ${skills}`);
           console.log(`[Seller] Respond result:`, JSON.stringify(result));
           return;
         }
@@ -59,9 +78,9 @@ async function main() {
         // TRANSACTION → 작업 실행 후 결과 전달
         if (job.phase === AcpJobPhases.TRANSACTION) {
           console.log(`[Seller] Executing job ${job.id}...`);
-          const edgarResult = await handleJobRequest(job.requirement as JobRequest | undefined);
+          const skillResult = await routeRequest(job.requirement as SkillRequest | undefined);
           console.log(`[Seller] Delivering result for job ${job.id}...`);
-          await job.deliver(JSON.stringify(edgarResult));
+          await job.deliver(JSON.stringify(skillResult));
           console.log(`[Seller] Job ${job.id} delivered!`);
           return;
         }
@@ -88,7 +107,7 @@ async function main() {
   console.log("[Seller] Initializing ACP client...");
   await acpClient.init();
 
-  console.log("[Seller] SEC EDGAR skill seller is running. Waiting for jobs...");
+  console.log(`[Seller] Multi-skill seller running. Skills: ${listSkills().join(", ")}`);
   console.log("[Seller] Press Ctrl+C to stop.");
 }
 
