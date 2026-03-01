@@ -1,102 +1,112 @@
-# SEC EDGAR Skill
+# axiom — Multi-Market AI Data Agent
 
-Search and retrieve SEC filings (10-K, 10-Q, 8-K, etc.) for any US public company.
+7개 금융/리서치 데이터 스킬을 제공하는 AI 에이전트. 복수 마켓플레이스에 동시 배포.
 
-**No API key required** — SEC EDGAR is a free, public API.
+## Skills
 
-## Install & Run
+| Skill | API | Description |
+|-------|-----|-------------|
+| SEC EDGAR | SEC (무료) | 10-K, 10-Q, 8-K 등 미국 공시 검색 |
+| DeFi Analytics | DefiLlama (무료) | TVL, yield, stablecoin 분석 |
+| Wallet Profiler | Etherscan V2 | 지갑 잔고, TX, NFT 조회 |
+| Paper Search | Semantic Scholar (무료) | 학술 논문 검색 |
+| US Macro Data | FRED | 금리, GDP, CPI 등 경제지표 |
+| Patent Search | USPTO PatentsView | 미국 특허 검색 |
+| Token Sentiment | CoinGecko (무료) | 암호화폐 감성 분석 |
 
-```bash
-git clone https://github.com/virtual-acp/sec-edgar-skill.git
-cd sec-edgar-skill
-npm install
+## Marketplaces
+
+| Market | Status | URL |
+|--------|--------|-----|
+| **MCPize** | Live | https://mcpize.com/mcp/axiom-mcp |
+| **Virtuals ACP** | 졸업 대기 | https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om |
+| Apify | 예정 | — |
+| Fetch.ai Agentverse | 예정 | — |
+
+## Quick Start
+
+### MCP Server (Claude Desktop / Cursor)
+
+```json
+{
+  "mcpServers": {
+    "axiom": {
+      "command": "npx",
+      "args": ["tsx", "adapters/mcp-server/server.ts"],
+      "env": {
+        "FRED_API_KEY": "your-key",
+        "ETHERSCAN_API_KEY": "your-key"
+      }
+    }
+  }
+}
 ```
 
-## Usage
+Or use the hosted endpoint: `https://axiom-mcp.mcpize.run`
 
-### CLI
-
-```bash
-# Company lookup
-npx tsx src/cli.ts lookup AAPL
-
-# Recent filings (10-K annual reports, last 5)
-npx tsx src/cli.ts filings TSLA --form 10-K --limit 5
-
-# Full-text search across all companies
-npx tsx src/cli.ts search "artificial intelligence" --forms 10-K,10-Q --limit 5
-
-# Fetch filing content
-npx tsx src/cli.ts fetch AAPL 0000320193-23-000106 aapl-20230930.htm
-```
-
-### npm Scripts
+### ACP Seller (Virtuals Protocol)
 
 ```bash
-npm run lookup -- AAPL
-npm run filings -- TSLA --form 10-K
-npm run search -- "revenue growth"
-npm test                              # Full pipeline test
-```
-
-### As a Library
-
-```typescript
-import { lookupCompany, getFilings, searchFilings, fetchFiling } from "./src/edgar-client.js";
-
-const company = await lookupCompany("AAPL");
-const filings = await getFilings("AAPL", { formType: "10-K", limit: 3 });
-const results = await searchFilings("AI risk", { forms: ["10-K"], limit: 5 });
+npm run seller
 ```
 
 ## Project Structure
 
 ```
-src/                        Core skill code (no ACP dependency)
-├── edgar-client.ts         EDGAR API client
-├── cli.ts                  CLI tool
-├── types.ts                Type definitions
-├── job-handler.ts          Request handler logic
-└── test-local.ts           Local integration test
-
-acp/                        ACP server mode (optional)
-├── seller.ts               ACP seller runtime
-├── buyer-test.ts           ACP buyer test
-├── acp-config.ts           ACP config loader
-└── offerings/              ACP offering definition
-
-SKILL.md                    Skill description for AI agents
+adapters/
+  virtuals-acp/    # Virtuals Protocol ACP seller
+  mcp-server/      # MCP server (30 tools)
+skills/            # 7 skill implementations
+lib/               # Shared utilities (skill-registry)
 ```
 
-## Environment Variables (Optional)
+## Commands
 
 ```bash
-# EDGAR User-Agent (recommended — falls back to default if unset)
-SEC_EDGAR_USER_AGENT="YourName contact@email.com"
+npm run mcp           # MCP server (stdio)
+npm run seller        # ACP seller (WebSocket)
+npm run buyer:test    # ACP buyer test
+npm run typecheck     # TypeScript check
 ```
 
-## Form Types
+## Deployment
 
-| Form | Description |
-|------|-------------|
-| 10-K | Annual Report |
-| 10-Q | Quarterly Report |
-| 8-K | Current Report (acquisitions, leadership changes, etc.) |
-| S-1 | IPO Registration Statement |
-| DEF 14A | Proxy Statement |
-| 20-F | Foreign Company Annual Report |
+### Railway (ACP Seller — 24/7)
 
-## ACP Server Mode (Optional)
-
-To offer this as a paid service on the Virtual Protocol ACP marketplace, see the `acp/` directory.
+현재 Railway Hobby ($5/mo)에서 ACP seller가 운영 중.
 
 ```bash
-# After configuring .env
-npm run seller      # Start seller
-npm run buyer:test  # Run buyer test
+# Railway 배포 (main branch auto-deploy)
+railway up
 ```
 
-See [SETUP.md](./SETUP.md) for detailed ACP configuration.
+- Start command: `tsx adapters/virtuals-acp/seller.ts`
+- Environment: Railway dashboard에서 .env 변수 설정
+
+### MCPize (MCP Server)
+
+```bash
+npx mcpize login          # 브라우저 로그인
+npx mcpize deploy --yes   # 배포
+npx mcpize secrets set FRED_API_KEY <value>        # API 키 설정
+npx mcpize secrets set ETHERSCAN_API_KEY <value>
+npx mcpize status         # 상태 확인
+```
+
+## Environment Variables
+
+```bash
+# Required for ACP
+WHITELISTED_WALLET_PRIVATE_KEY=0x...
+SESSION_ENTITY_KEY_ID=...
+AGENT_WALLET_ADDRESS=0x...
+
+# Optional API keys (스킬별)
+FRED_API_KEY=...
+ETHERSCAN_API_KEY=...
+SEC_EDGAR_USER_AGENT=...
+PATENTSVIEW_API_KEY=...
+```
 
 ## License
 
