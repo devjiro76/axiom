@@ -1,11 +1,16 @@
 {
-  "name": "virtual-acp",
-  "version": "0.2.0",
-  "description": "ACP multi-skill umbrella — Virtuals Protocol Agent Commerce",
+  "name": "axiom-data-mcp",
+  "version": "1.0.0",
+  "description": "Financial & research data MCP server — SEC filings, DeFi analytics, wallet profiling, academic papers, US macro data, patent search, token sentiment. 30 tools for AI agents.",
   "type": "module",
   "bin": {
-    "sec-edgar": "skills/sec-edgar/cli.ts"
+    "axiom-data-mcp": "dist/adapters/mcp-server/server.js"
   },
+  "files": [
+    "dist/adapters/mcp-server",
+    "dist/skills",
+    "dist/lib"
+  ],
   "scripts": {
     "search": "tsx skills/sec-edgar/cli.ts search",
     "lookup": "tsx skills/sec-edgar/cli.ts lookup",
@@ -14,20 +19,30 @@
     "test": "tsx skills/sec-edgar/test.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
     "start": "tsx adapters/virtuals-acp/seller.ts",
     "seller": "tsx adapters/virtuals-acp/seller.ts",
     "buyer:test": "tsx adapters/virtuals-acp/buyer-test.ts",
     "mcp": "tsx adapters/mcp-server/server.ts"
   },
   "keywords": [
-    "sec",
-    "edgar",
-    "filings",
-    "10-k",
-    "10-q",
-    "openclaw",
-    "virtual-protocol"
+    "mcp",
+    "mcp-server",
+    "ai-agent",
+    "sec-edgar",
+    "defi",
+    "crypto",
+    "financial-data",
+    "macro-economics",
+    "patent-search",
+    "academic-papers",
+    "token-sentiment",
+    "wallet-profiler"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devjiro76/axiom"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^25.3.1",

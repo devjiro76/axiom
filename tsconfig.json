@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "strict": true,
     "esModuleInterop": true,
     "outDir": "dist",
     "declaration": true,
     "skipLibCheck": true
   },
-  "include": ["skills", "acp"],
-  "exclude": ["node_modules", "dist", "acp/buyer-test.ts"]
+  "include": ["skills", "adapters", "lib"],
+  "exclude": ["node_modules", "dist", "adapters/virtuals-acp/buyer-test.ts"]
 }
