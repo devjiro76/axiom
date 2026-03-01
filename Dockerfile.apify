@@ -1,0 +1,20 @@
+# ── Builder stage ──
+FROM apify/actor-node:22 AS builder
+
+COPY --chown=myuser:myuser package*.json ./
+RUN npm install --include=dev --audit=false
+
+COPY --chown=myuser:myuser . ./
+RUN npm run build
+
+# ── Final stage ──
+FROM apify/actor-node:22
+
+COPY --chown=myuser:myuser package*.json ./
+RUN npm --quiet set progress=false \
+    && npm install --omit=dev --omit=optional --audit=false
+
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --chown=myuser:myuser .actor ./.actor
+
+CMD ["node", "dist/adapters/apify/actor.js"]

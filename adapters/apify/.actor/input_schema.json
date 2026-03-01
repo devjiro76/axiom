@@ -1,0 +1,71 @@
+{
+  "title": "Axiom Data Agent Input",
+  "description": "Select a skill and action to run. Each skill provides different financial/research data.",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "skill": {
+      "title": "Skill",
+      "type": "string",
+      "description": "Which data skill to invoke",
+      "editor": "select",
+      "enum": [
+        "sec-edgar",
+        "defi-analytics",
+        "wallet-profiler",
+        "paper-search",
+        "macro-data",
+        "patent-search",
+        "token-sentiment"
+      ],
+      "default": "sec-edgar"
+    },
+    "action": {
+      "title": "Action",
+      "type": "string",
+      "description": "Action to perform. Examples: search, lookup, filings (SEC); top_protocols, yield_search (DeFi); balance, tokens, tx_history (Wallet); search, paper_detail (Paper); search, series, popular (Macro); search, patent_detail (Patent); overview, sentiment, trending (Token)",
+      "editor": "textfield",
+      "prefill": "search"
+    },
+    "query": {
+      "title": "Query",
+      "type": "string",
+      "description": "Search query (used by most skills)",
+      "editor": "textfield",
+      "prefill": "artificial intelligence"
+    },
+    "ticker": {
+      "title": "Ticker",
+      "type": "string",
+      "description": "Stock ticker symbol (SEC EDGAR)",
+      "editor": "textfield"
+    },
+    "address": {
+      "title": "Wallet Address",
+      "type": "string",
+      "description": "Wallet address 0x... (Wallet Profiler)",
+      "editor": "textfield"
+    },
+    "coinId": {
+      "title": "Coin ID",
+      "type": "string",
+      "description": "CoinGecko coin ID e.g. bitcoin, ethereum (Token Sentiment)",
+      "editor": "textfield"
+    },
+    "seriesId": {
+      "title": "FRED Series ID",
+      "type": "string",
+      "description": "FRED series ID e.g. GDP, UNRATE (US Macro)",
+      "editor": "textfield"
+    },
+    "limit": {
+      "title": "Max Results",
+      "type": "integer",
+      "description": "Maximum number of results to return",
+      "default": 5,
+      "minimum": 1,
+      "maximum": 100
+    }
+  },
+  "required": ["skill", "action"]
+}
