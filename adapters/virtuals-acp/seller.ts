@@ -6,7 +6,7 @@
  * requirement.skill 필드로 라우팅, 미지정 시 기본 스킬(sec-edgar)로 폴백.
  *
  * Usage:
- *   tsx acp/seller.ts
+ *   tsx adapters/virtuals-acp/seller.ts
  */
 
 import AcpClientDefault, {
@@ -15,16 +15,16 @@ import AcpClientDefault, {
   AcpJobPhases,
 } from "@virtuals-protocol/acp-node";
 import { loadSellerConfig, buildContractClient } from "./config.js";
-import { registerSkill, setDefaultSkill, routeRequest, listSkills, type SkillRequest } from "../lib/skill-registry.js";
+import { registerSkill, setDefaultSkill, routeRequest, listSkills, type SkillRequest } from "../../lib/skill-registry.js";
 
 // ─── Skill Registration ───
-import { handleJobRequest as edgarHandler } from "../skills/sec-edgar/handler.js";
-import { handleJobRequest as paperHandler } from "../skills/paper-search/handler.js";
-import { handleJobRequest as defiHandler } from "../skills/defi-analytics/handler.js";
-import { handleJobRequest as macroHandler } from "../skills/macro-data/handler.js";
-import { handleJobRequest as walletHandler } from "../skills/wallet-profiler/handler.js";
-import { handleJobRequest as patentHandler } from "../skills/patent-search/handler.js";
-import { handleJobRequest as sentimentHandler } from "../skills/token-sentiment/handler.js";
+import { handleJobRequest as edgarHandler } from "../../skills/sec-edgar/handler.js";
+import { handleJobRequest as paperHandler } from "../../skills/paper-search/handler.js";
+import { handleJobRequest as defiHandler } from "../../skills/defi-analytics/handler.js";
+import { handleJobRequest as macroHandler } from "../../skills/macro-data/handler.js";
+import { handleJobRequest as walletHandler } from "../../skills/wallet-profiler/handler.js";
+import { handleJobRequest as patentHandler } from "../../skills/patent-search/handler.js";
+import { handleJobRequest as sentimentHandler } from "../../skills/token-sentiment/handler.js";
 
 registerSkill("sec-edgar", edgarHandler as (req: SkillRequest | undefined) => Promise<{ success?: boolean; error?: string; data?: unknown }>);
 registerSkill("paper-search", paperHandler);

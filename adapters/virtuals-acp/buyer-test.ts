@@ -6,8 +6,8 @@
  * 셀러에게 SEC EDGAR 검색 작업을 요청하고 결과를 평가합니다.
  *
  * Usage:
- *   tsx acp/buyer-test.ts              # 1건 테스트
- *   tsx acp/buyer-test.ts --count 10   # 10건 연속 테스트
+ *   tsx adapters/virtuals-acp/buyer-test.ts              # 1건 테스트
+ *   tsx adapters/virtuals-acp/buyer-test.ts --count 10   # 10건 연속 테스트
  */
 
 import AcpClientDefault, {

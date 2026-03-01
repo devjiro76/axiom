@@ -14,9 +14,10 @@
     "test": "tsx skills/sec-edgar/test.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "start": "tsx acp/seller.ts",
-    "seller": "tsx acp/seller.ts",
-    "buyer:test": "tsx acp/buyer-test.ts"
+    "start": "tsx adapters/virtuals-acp/seller.ts",
+    "seller": "tsx adapters/virtuals-acp/seller.ts",
+    "buyer:test": "tsx adapters/virtuals-acp/buyer-test.ts",
+    "mcp": "tsx adapters/mcp-server/server.ts"
   },
   "keywords": [
     "sec",
@@ -35,7 +36,9 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "cheerio": "^1.2.0"
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "cheerio": "^1.2.0",
+    "zod": "^3.25.76"
   },
   "optionalDependencies": {
     "dotenv": "^17.3.1"
