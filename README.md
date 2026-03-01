@@ -18,9 +18,10 @@
 
 | Market | Status | URL |
 |--------|--------|-----|
+| **npm** | Published | [axiom-data-mcp](https://www.npmjs.com/package/axiom-data-mcp) |
 | **MCPize** | Live | https://mcpize.com/mcp/axiom-mcp |
+| **Apify** | Deployed | [Console](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) |
 | **Virtuals ACP** | 졸업 대기 | https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om |
-| Apify | 예정 | — |
 | Fetch.ai Agentverse | 예정 | — |
 
 ## Quick Start
@@ -32,7 +33,7 @@
   "mcpServers": {
     "axiom": {
       "command": "npx",
-      "args": ["tsx", "adapters/mcp-server/server.ts"],
+      "args": ["-y", "axiom-data-mcp"],
       "env": {
         "FRED_API_KEY": "your-key",
         "ETHERSCAN_API_KEY": "your-key"
@@ -50,12 +51,17 @@ Or use the hosted endpoint: `https://axiom-mcp.mcpize.run`
 npm run seller
 ```
 
+### Apify Actor
+
+Run via [Apify Console](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) or API.
+
 ## Project Structure
 
 ```
 adapters/
   virtuals-acp/    # Virtuals Protocol ACP seller
   mcp-server/      # MCP server (30 tools)
+  apify/           # Apify Actor
 skills/            # 7 skill implementations
 lib/               # Shared utilities (skill-registry)
 ```
@@ -71,26 +77,22 @@ npm run typecheck     # TypeScript check
 
 ## Deployment
 
-### Railway (ACP Seller — 24/7)
+See [docs/markets/README.md](docs/markets/README.md) for full deployment guide.
 
-현재 Railway Hobby ($5/mo)에서 ACP seller가 운영 중.
+### Quick Reference
 
 ```bash
-# Railway 배포 (main branch auto-deploy)
+# MCPize
+npx mcpize deploy --yes
+
+# npm
+npm publish --access public
+
+# Apify
+npx apify-cli push -w 120
+
+# Railway (ACP)
 railway up
-```
-
-- Start command: `tsx adapters/virtuals-acp/seller.ts`
-- Environment: Railway dashboard에서 .env 변수 설정
-
-### MCPize (MCP Server)
-
-```bash
-npx mcpize login          # 브라우저 로그인
-npx mcpize deploy --yes   # 배포
-npx mcpize secrets set FRED_API_KEY <value>        # API 키 설정
-npx mcpize secrets set ETHERSCAN_API_KEY <value>
-npx mcpize status         # 상태 확인
 ```
 
 ## Environment Variables

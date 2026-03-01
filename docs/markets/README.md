@@ -10,37 +10,39 @@
 |------|------|--------|-----------|-----|
 | **Virtuals ACP** | ✅ Live (졸업 대기) | `adapters/virtuals-acp/` | USDC per-call | [Link](https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om) |
 | **MCPize** | ✅ Live | `adapters/mcp-server/` | Stripe (미설정) | [Link](https://mcpize.com/mcp/axiom-mcp) |
-| **Apify** | ⬜ 예정 | `adapters/apify/` | 호출당 과금 | — |
+| **npm** | ✅ Published | `adapters/mcp-server/` | — | [axiom-data-mcp](https://www.npmjs.com/package/axiom-data-mcp) |
+| **Apify** | ✅ Deployed | `adapters/apify/` | 호출당 과금 | [Console](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) |
 | **Fetch.ai Agentverse** | ⬜ 예정 | `adapters/agentverse/` | FET 토큰 | — |
 | **Google Cloud** | ⬜ 조사 필요 | — | 구독/사용량 | — |
 | **Microsoft** | ⬜ 조사 필요 | — | 구독/사용량 | — |
 
 ### 스킬별 마켓 지원
 
-| Skill | Virtuals ACP | MCPize | Apify | Agentverse |
-|-------|:------------:|:------:|:-----:|:----------:|
-| SEC EDGAR | ✅ | ✅ | ⬜ | ⬜ |
-| DeFi Analytics | ✅ | ✅ | ⬜ | ⬜ |
-| Wallet Profiler | ✅ | ✅ | ⬜ | ⬜ |
-| Paper Search | ✅ | ✅ | ⬜ | ⬜ |
-| US Macro Data | ✅ | ✅ | ⬜ | ⬜ |
-| Patent Search | ✅ | ✅ | ⬜ | ⬜ |
-| Token Sentiment | ✅ | ✅ | ⬜ | ⬜ |
+| Skill | Virtuals ACP | MCPize | npm | Apify | Agentverse |
+|-------|:------------:|:------:|:---:|:-----:|:----------:|
+| SEC EDGAR | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| DeFi Analytics | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| Wallet Profiler | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| Paper Search | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| US Macro Data | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| Patent Search | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| Token Sentiment | ✅ | ✅ | ✅ | ✅ | ⬜ |
 
 ---
 
 ## 남은 작업
 
 ### Phase 1: MCP 수익화
+- [x] npm 패키지 배포 (`npx axiom-data-mcp`)
 - [ ] MCPize Stripe 연동 → 가격 설정
-- [ ] npm 패키지 배포 (`npx axiom-mcp`)
 - [ ] Cline MCP Marketplace PR 제출
 
 ### Phase 2: Apify Actor
-- [ ] Apify 계정 생성
-- [ ] `adapters/apify/actor.ts` 구현
-- [ ] `apify push` 배포
-- [ ] 마켓 가격 설정 & 공개
+- [x] Apify 계정 생성
+- [x] `adapters/apify/actor.ts` 구현
+- [x] `apify push` 배포
+- [ ] Apify 마켓플레이스 공개 (Publication 설정)
+- [ ] 마켓 가격 설정 (PPE or Rental)
 
 ### Phase 3: Fetch.ai Agentverse
 - [ ] Agentverse 계정 & 문서 조사
@@ -110,7 +112,7 @@ npx mcpize status
   "mcpServers": {
     "axiom": {
       "command": "npx",
-      "args": ["tsx", "adapters/mcp-server/server.ts"],
+      "args": ["-y", "axiom-data-mcp"],
       "env": {
         "FRED_API_KEY": "your-key",
         "ETHERSCAN_API_KEY": "your-key"
@@ -126,27 +128,46 @@ npx mcpize status
 
 ---
 
-### 3. Apify Actor (예정)
+### 3. npm (완료)
 
-**예상 프로세스**:
+**패키지**: [axiom-data-mcp](https://www.npmjs.com/package/axiom-data-mcp)
+
 ```bash
-# Apify CLI 설치
-npm install -g apify-cli
+# 사용자가 설치하는 법
+npx axiom-data-mcp
 
-# 프로젝트 초기화 (adapters/apify/)
-apify init
-
-# 배포
-apify push
-
-# 마켓 등록은 Apify Console에서
+# 배포 (maintainer)
+npm run build
+npm publish --access public
 ```
-
-**어댑터 위치**: `adapters/apify/actor.ts`
 
 ---
 
-### 4. Fetch.ai Agentverse (예정)
+### 4. Apify Actor (완료)
+
+**호스팅**: Apify 클라우드 (Docker 기반)
+
+```bash
+# 로그인
+npx apify-cli login --token <your-token>
+
+# 배포
+npx apify-cli push -w 120
+
+# 시크릿 (로컬 설정 → actor.json에서 @참조)
+npx apify-cli secrets add fredApiKey <value>
+npx apify-cli secrets add etherscanApiKey <value>
+```
+
+**Console**: https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y
+
+**어댑터**: `adapters/apify/actor.ts`
+
+**설정 파일**: `.actor/actor.json`, `Dockerfile.apify`
+
+---
+
+### 5. Fetch.ai Agentverse (예정)
 
 **예상 프로세스**:
 - Agentverse 브라우저 IDE에서 에이전트 생성
@@ -164,8 +185,8 @@ skills/              ← 플랫폼 무관 비즈니스 로직 (7개 스킬)
 lib/                 ← 공유 유틸리티
 adapters/
   virtuals-acp/      ← Virtuals Protocol (WebSocket, Railway)
-  mcp-server/        ← MCP 프로토콜 (stdio, MCPize)
-  apify/             ← Apify Actor (예정)
+  mcp-server/        ← MCP 프로토콜 (stdio, MCPize + npm)
+  apify/             ← Apify Actor (Docker, Apify Cloud)
   agentverse/        ← Fetch.ai uAgent (예정)
 ```
 
