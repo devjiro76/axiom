@@ -10,5 +10,5 @@
     "skipLibCheck": true
   },
   "include": ["skills", "adapters", "lib"],
-  "exclude": ["node_modules", "dist", "adapters/virtuals-acp/buyer-test.ts"]
+  "exclude": ["node_modules", "dist", "adapters/virtuals-acp/buyer-test.ts", "adapters/apify"]
 }
