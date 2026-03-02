@@ -1,4 +1,4 @@
-# axiom — 마켓 배포 현황 & 가이드
+# axiom — 마켓 배포 현황 & 수익화 가이드
 
 > Last updated: 2026-03-01
 
@@ -6,56 +6,121 @@
 
 ### 마켓별 상태
 
-| 마켓 | 상태 | 어댑터 | 수익 모델 | URL |
-|------|------|--------|-----------|-----|
-| **Virtuals ACP** | ✅ Live (졸업 대기) | `adapters/virtuals-acp/` | USDC per-call | [Link](https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om) |
-| **MCPize** | ✅ Live | `adapters/mcp-server/` | Stripe (미설정) | [Link](https://mcpize.com/mcp/axiom-mcp) |
-| **npm** | ✅ Published | `adapters/mcp-server/` | — | [axiom-data-mcp](https://www.npmjs.com/package/axiom-data-mcp) |
-| **Apify** | ✅ Deployed | `adapters/apify/` | 호출당 과금 | [Console](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) |
-| **Fetch.ai Agentverse** | ⬜ 예정 | `adapters/agentverse/` | FET 토큰 | — |
-| **Google Cloud** | ⬜ 조사 필요 | — | 구독/사용량 | — |
-| **Microsoft** | ⬜ 조사 필요 | — | 구독/사용량 | — |
+| 마켓 | 배포 | 수익 수령 가능 | 수익 모델 | 수령률 | URL |
+|------|:----:|:-------------:|-----------|:------:|-----|
+| **MCPize** | ✅ | **PayPal 설정완료** | 구독 (Free/$4.99/$19.99) | 85% | [Link](https://mcpize.com/mcp/axiom-mcp) |
+| **Apify** | ✅ | **PPE 설정완료 (3/15~)** | Pay-per-event | 80% | [Store](https://apify.com/bodacious_avatar/axiom-data-agent) |
+| **Virtuals ACP** | ✅ | **불가 (testnet)** | USDC 에스크로 per-call | 60% | [Link](https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om) |
+| **Agentverse** | ✅ | **불가 (미구현)** | Payment Protocol (초기) | 미정 | [Agent](https://agentverse.ai/agents/details/agent1qdllwygk42gcy82um56xa9rnhwvljum7fe9pcj38swtr3d9l59pxcqv69qr/profile) |
+| **npm** | ✅ | 해당없음 | 무료 배포 (MCPize 유도) | 0% | [axiom-data-mcp](https://www.npmjs.com/package/axiom-data-mcp) |
+| Cline Marketplace | ⏳ 리뷰 중 | — | — | — | Issue #733 |
 
 ### 스킬별 마켓 지원
 
 | Skill | Virtuals ACP | MCPize | npm | Apify | Agentverse |
 |-------|:------------:|:------:|:---:|:-----:|:----------:|
-| SEC EDGAR | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| DeFi Analytics | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| Wallet Profiler | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| Paper Search | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| US Macro Data | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| Patent Search | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| Token Sentiment | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| SEC EDGAR | ✅ | ✅ | ✅ | ✅ | ✅ |
+| DeFi Analytics | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Wallet Profiler | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Paper Search | ✅ | ✅ | ✅ | ✅ | ✅ |
+| US Macro Data | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Patent Search | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Token Sentiment | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+---
+
+## 수익화 상세
+
+### MCPize (최우선)
+
+- **수익 모델**: 구독제 (Free / Basic $4.99 / Pro $19.99)
+- **수익 분배**: 개발자 85%, 플랫폼 15%
+- **수령 방법**: Stripe Connect → 은행 계좌 직접 입금
+- **현재 상태**: ✅ PayPal 설정 완료 (devjiro76@gmail.com, Active)
+- **구독자**: 0명
+- **필요 조치**: 유료 구독자 유치만 남음
+- **대시보드**: https://mcpize.com/developer/servers/f72d6134-76fa-4be2-b201-0fe86038f646?tab=monetize
+
+### Apify Store (우선)
+
+- **수익 모델**: Pay-per-event (PPE) 또는 Rental (월정액)
+- **수익 분배**: 개발자 80%, 플랫폼 20%
+- **수령 방법**: PayPal (최소 $20) 또는 은행 송금 (최소 $100)
+- **현재 상태**: ✅ PPE 모델 설정 완료 (2026-03-15 적용)
+  - Billing details: Choi JungHyun, Seoul, South Korea
+  - Payment method: Amex ....7719
+  - Beneficiary payout: PayPal (devjiro76@gmail.com)
+  - Pricing: Result $0.00001 + Actor Start $0.00005
+- **지급 주기**: 매월 11일 청구서 → 승인 후 14일 내 PayPal 송금
+- **필요 조치**:
+  1. ~~Billing details 입력~~ ✅
+  2. ~~Payment method 설정~~ ✅
+  3. ~~Monetization PPE 설정~~ ✅
+  4. Identity verification 완료 (신분증 필요)
+  5. (권장) Output schema 추가
+- **콘솔**: https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y/publication
+
+### Virtuals ACP (보류)
+
+- **수익 모델**: 에스크로 기반 USDC 정산
+- **수익 분배**: Seller 60% + 토큰 바이백 30% + 프로토콜 10%
+- **수령 위치**: Agent 지갑 (AGENT_WALLET_ADDRESS) → Butler Wallet에서 출금
+- **현재 상태**: testnet → 실제 USDC 거래 없음
+- **서비스 가격**: 0.001 USDC/request (offering.json)
+- **필요 조치** (토큰 발행 보류로 인해 전체 보류):
+  1. 토큰 발행 (1000 VIRTUAL 필요, Unicorn launch)
+  2. 졸업 리뷰 통과
+  3. mainnet 전환 (NETWORK=mainnet)
+- **Revenue Incentive**: 월 최대 $1M USDC 풀에서 ACP seller에 추가 분배
+
+### Fetch.ai Agentverse (장기)
+
+- **수익 모델**: Payment Protocol (USDC/FET, v0.1.0 초기)
+- **현재 상태**: 무료 서비스 제공 중, Payment Protocol 미구현
+- **지원 결제**: skyfire (Visa), fet_direct (온체인 FET)
+- **현실적 평가**: 수익화 인프라 미성숙, 구체적 수수료율/정산 정보 부재
+- **필요 조치**: Payment Protocol 구현 (장기 과제)
+
+### npm (간접 수익)
+
+- **수익 모델**: 없음 (무료 오픈소스)
+- **역할**: MCPize 유료 플랜으로의 유입 채널
+- **추가 옵션**: GitHub Sponsors, package.json funding 필드
+
+---
+
+## 수익화 우선순위
+
+```
+[완료] MCPize PayPal 설정 → 구독 수익 수령 가능 ✅
+[완료] Apify PPE 모델 설정 → 3/15부터 수익 수령 가능 ✅
+[대기] Apify Identity verification (신분증)
+[보류] Virtuals ACP 토큰 발행 (1000 VIRTUAL) + 졸업
+[장기] Agentverse Payment Protocol 구현
+```
 
 ---
 
 ## 남은 작업
 
-### Phase 1: MCP 수익화
+### Phase 1: 수익 수령 인프라 (최우선)
+- [x] MCPize PayPal 설정 (devjiro76@gmail.com, Active)
+- [x] Apify Billing + Payment method 설정
+- [x] Apify 유료 모델 전환 (PPE, 3/15 적용)
+- [ ] Apify Identity verification (신분증)
+
+### Phase 2: 마켓 확장
 - [x] npm 패키지 배포 (`npx axiom-data-mcp`)
-- [ ] MCPize Stripe 연동 → 가격 설정
-- [ ] Cline MCP Marketplace PR 제출
+- [ ] Cline MCP Marketplace 승인 대기 (#733)
 
-### Phase 2: Apify Actor
-- [x] Apify 계정 생성
-- [x] `adapters/apify/actor.ts` 구현
-- [x] `apify push` 배포
-- [ ] Apify 마켓플레이스 공개 (Publication 설정)
-- [ ] 마켓 가격 설정 (PPE or Rental)
-
-### Phase 3: Fetch.ai Agentverse
-- [ ] Agentverse 계정 & 문서 조사
-- [ ] `adapters/agentverse/agent.ts` (uAgent SDK)
-- [ ] Almanac 등록 & 배포
-
-### Phase 4: 엔터프라이즈
-- [ ] Google Cloud Marketplace 요건 조사
-- [ ] Microsoft Marketplace 요건 조사
-
-### Virtuals ACP 잔여
-- [ ] axiom 토큰 발행 (100 VIRTUAL)
+### Phase 3: Virtuals ACP 졸업 (보류)
+- [ ] 토큰 발행 (1000 VIRTUAL, Unicorn launch) — 위자드 입력 완료, 결제만 남음
 - [ ] 졸업 리뷰 통과
+- [ ] mainnet 전환
+
+### Phase 4: 장기
+- [ ] Agentverse Payment Protocol 구현
+- [ ] Google Cloud / Microsoft Marketplace 조사
 
 ---
 

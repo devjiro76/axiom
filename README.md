@@ -2,6 +2,10 @@
 
 [![MCPize](https://mcpize.com/badge/@devjiro76/axiom-mcp?type=install&style=flat)](https://mcpize.com/mcp/axiom-mcp)
 [![npm](https://img.shields.io/npm/v/axiom-data-mcp)](https://www.npmjs.com/package/axiom-data-mcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Markets](https://img.shields.io/badge/Markets-5-brightgreen)](https://github.com/devjiro76/axiom#marketplaces)
+[![Skills](https://img.shields.io/badge/Skills-7-orange)](https://github.com/devjiro76/axiom#skills)
 
 AI agent providing 7 financial & research data skills. Deployed simultaneously across multiple agent marketplaces.
 
@@ -25,7 +29,7 @@ AI agent providing 7 financial & research data skills. Deployed simultaneously a
 | **MCPize** | Live | [axiom-mcp](https://mcpize.com/mcp/axiom-mcp) |
 | **Apify** | Deployed | [Actor](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) |
 | **Virtuals ACP** | Live | [Agent](https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om) |
-| **Fetch.ai Agentverse** | Deployed | — |
+| **Fetch.ai Agentverse** | Deployed | Railway hosted |
 
 ## Quick Start
 
