@@ -24,6 +24,11 @@ Thumbs.db
 *.swp
 *.swo
 
+# Internal docs (not for public)
+CLAUDE.md
+HANDOFF.md
+Plans.md
+
 # TypeScript
 *.tsbuildinfo
 
