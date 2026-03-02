@@ -29,7 +29,7 @@ AI agent providing 7 financial & research data skills. Deployed simultaneously a
 | **MCPize** | Live | [axiom-mcp](https://mcpize.com/mcp/axiom-mcp) |
 | **Apify** | Deployed | [Actor](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) |
 | **Virtuals ACP** | Live | [Agent](https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om) |
-| **Fetch.ai Agentverse** | Deployed | Railway hosted |
+| **Fetch.ai Agentverse** | Deployed | [Agent](https://agentverse.ai/agents/details/agent1qg2fpv42ujj9eld0zy3cxcfaxd6yr43ma9ztlmuqg7nn5h4xnpv9j745ae9/profile) |
 
 ## Quick Start
 
