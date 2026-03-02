@@ -8,7 +8,7 @@
     "templateId": "ts-start"
   },
   "input": "./input_schema.json",
-  "dockerfile": "../Dockerfile.apify",
+  "dockerfile": "./Dockerfile.apify",
   "environmentVariables": {
     "FRED_API_KEY": "@fredApiKey",
     "ETHERSCAN_API_KEY": "@etherscanApiKey"
