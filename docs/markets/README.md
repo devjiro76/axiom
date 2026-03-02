@@ -60,17 +60,20 @@
   5. (권장) Output schema 추가
 - **콘솔**: https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y/publication
 
-### Virtuals ACP (보류)
+### Virtuals ACP (졸업 리뷰 대기)
 
 - **수익 모델**: 에스크로 기반 USDC 정산
 - **수익 분배**: Seller 60% + 토큰 바이백 30% + 프로토콜 10%
 - **수령 위치**: Agent 지갑 (AGENT_WALLET_ADDRESS) → Butler Wallet에서 출금
-- **현재 상태**: testnet → 실제 USDC 거래 없음
+- **현재 상태**: 졸업 폼 제출 완료, Virtuals 팀 리뷰 대기 중 (7 영업일)
 - **서비스 가격**: 0.001 USDC/request (offering.json)
-- **필요 조치** (토큰 발행 보류로 인해 전체 보류):
-  1. 토큰 발행 (1000 VIRTUAL 필요, Unicorn launch)
-  2. 졸업 리뷰 통과
-  3. mainnet 전환 (NETWORK=mainnet)
+- **졸업 요건 충족**:
+  - Consecutive Successful Jobs: 3/3 ✅
+  - Total Successful Jobs: 14/10 ✅
+  - Submission Form: 제출 완료 ✅
+- **졸업 후 필요 조치**:
+  1. mainnet 전환 (NETWORK=mainnet)
+  2. 토큰 발행은 별도 (선택, ACP 졸업과 무관)
 - **Revenue Incentive**: 월 최대 $1M USDC 풀에서 ACP seller에 추가 분배
 
 ### Fetch.ai Agentverse (장기)
@@ -95,7 +98,7 @@
 [완료] MCPize PayPal 설정 → 구독 수익 수령 가능 ✅
 [완료] Apify PPE 모델 설정 → 3/15부터 수익 수령 가능 ✅
 [대기] Apify Identity verification (신분증)
-[보류] Virtuals ACP 토큰 발행 (1000 VIRTUAL) + 졸업
+[리뷰 대기] Virtuals ACP 졸업 (폼 제출 완료, 7 영업일 내 결과)
 [장기] Agentverse Payment Protocol 구현
 ```
 
@@ -113,9 +116,11 @@
 - [x] npm 패키지 배포 (`npx axiom-data-mcp`)
 - [ ] Cline MCP Marketplace 승인 대기 (#733)
 
-### Phase 3: Virtuals ACP 졸업 (보류)
-- [ ] 토큰 발행 (1000 VIRTUAL, Unicorn launch) — 위자드 입력 완료, 결제만 남음
-- [ ] 졸업 리뷰 통과
+### Phase 3: Virtuals ACP 졸업 (리뷰 대기)
+- [x] 샌드박스 10건+ 성공 (14/10)
+- [x] 3건 연속 성공 (3/3)
+- [x] 졸업 폼 제출
+- [ ] Virtuals 팀 리뷰 통과 (대기 중)
 - [ ] mainnet 전환
 
 ### Phase 4: 장기
