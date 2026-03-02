@@ -25,11 +25,11 @@ AI agent providing 7 financial & research data skills. Deployed simultaneously a
 
 | Market | Status | URL |
 |--------|--------|-----|
-| **npm** | Published | [axiom-data-mcp](https://www.npmjs.com/package/axiom-data-mcp) |
+| **npm** | Live | [axiom-data-mcp](https://www.npmjs.com/package/axiom-data-mcp) |
 | **MCPize** | Live | [axiom-mcp](https://mcpize.com/mcp/axiom-mcp) |
-| **Apify** | Deployed | [Actor](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) |
+| **Apify** | Live | [Actor](https://console.apify.com/actors/Nma9xvyeLgNeNXz9Y) |
 | **Virtuals ACP** | Live | [Agent](https://app.virtuals.io/acp/agents/swag6nltvnmdieiqclqkw4om) |
-| **Fetch.ai Agentverse** | Deployed | [Agent](https://agentverse.ai/agents/details/agent1qg2fpv42ujj9eld0zy3cxcfaxd6yr43ma9ztlmuqg7nn5h4xnpv9j745ae9/profile) |
+| **Fetch.ai Agentverse** | Live | [Agent](https://agentverse.ai/agents/details/agent1qg2fpv42ujj9eld0zy3cxcfaxd6yr43ma9ztlmuqg7nn5h4xnpv9j745ae9/profile) |
 
 ## Quick Start
 
